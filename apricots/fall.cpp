@@ -137,7 +137,7 @@ bool fall_collision(gamedata &g, falltype &fall) {
 
     case 2: // towers
     {
-      int ty = g.gamemap.b[x].y - g.gamemap.b[x].towersize * 16;
+      int ty = max(int(fall.y), g.gamemap.b[x].y - g.gamemap.b[x].towersize * 16);
       if (g.images[197].collide(g.gamemap.b[x].x, ty, g.images[fall.image], (int)fall.x, (int)fall.y)) {
         // Calculate height of tower strike
         int h = clamp(int((g.gamemap.b[x].y - fall.y) / 16), 0, 100);
