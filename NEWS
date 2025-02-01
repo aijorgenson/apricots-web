@@ -1,4 +1,11 @@
-* 2023-05-11 moggers87  0.2.8
+* 2025-02-01 moggers87 0.2.9
+
+- Planes can no longer fly through tower blocks
+- Volume controls can now be set via the config file
+- More source code cleanups
+- Finish screen now waits for user input before quitting
+
+* 2023-05-11 moggers87 0.2.8
 
 - Make OpenAL a hard requirement
 - Migrate from freealut to alure
