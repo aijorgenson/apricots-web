@@ -42,6 +42,7 @@ const int TICK_INTERVAL = 20;
 const double PI = 3.141592;
 const int SCREEN_HEIGHT = 480;
 const int SCREEN_WIDTH = 640;
+const int QUIT_WAIT_MS = 2000;
 
 // Datatypes
 
