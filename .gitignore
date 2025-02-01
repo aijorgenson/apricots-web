@@ -27,3 +27,4 @@ apricots-*.tar.gz
 
 # editor files
 *.swp
+*~
