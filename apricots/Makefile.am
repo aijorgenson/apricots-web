@@ -17,7 +17,7 @@ EXTRA_DIST = $(APRICOTS_DATA_FILES)
 
 install-data-local:
 	$(mkinstalldirs) ${DESTDIR}$(pkgdatadir)/
-	find "$(APRICOTS_DATA_FILES)" -type f -exec $(INSTALL_DATA) {} ${DESTDIR}$(pkgdatadir) \;
+	find "$(APRICOTS_DATA_FILES)" -type f ! -name "Makefile*" -exec $(INSTALL_DATA) {} ${DESTDIR}$(pkgdatadir) \;
 
 uninstall-local:
 	-rm -rf ${DESTDIR}$(pkgdatadir)
