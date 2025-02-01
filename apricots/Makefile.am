@@ -1,7 +1,28 @@
 bin_PROGRAMS = apricots
 
-apricots_SOURCES = SDLfont.cpp shape.cpp setup.cpp sampleio.cpp init.cpp game.cpp finish.cpp fall.cpp drawall.cpp drak.cpp collide.cpp apricots.cpp all.cpp ai.cpp
-apricots_LDADD   =
+apricots_SOURCES = \
+	SDLfont.h \
+	ai.cpp \
+	all.cpp \
+	apricots.cpp \
+	collide.cpp \
+	data.h \
+	fall.cpp \
+	game.cpp \
+	SDLfont.cpp \
+	apricots.h \
+	drak.cpp \
+	finish.cpp \
+	init.cpp \
+	sampleio.cpp \
+	sampleio.h \
+	setup.cpp \
+	shape.cpp \
+	drawall.cpp \
+	linkedlist.h \
+	shape.h
+
+apricots_LDADD =
 
 SUBDIRS = data docs
 

@@ -6,10 +6,11 @@ bin_PROGRAM = apricots
 CHANGELOG_GIT_FLAGS = --oneline
 dist-hook: dist-ChangeLog
 
-CPPCHECK_CMD = cppcheck --std=c++17 --error-exitcode=1
+CPPCHECK_CMD = cppcheck --std=c++17 --error-exitcode=1 --check-level=exhaustive
 
 CLANG_FORMAT_CMD = clang-format -style=file -Werror -i
 CLANG_FORMAT_CHECK_CMD = ${CLANG_FORMAT_CMD} -dry-run
+EXTRA_DIST = .clang-format
 
 .PHONY: cppcheck
 cppcheck:
