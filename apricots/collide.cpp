@@ -132,7 +132,7 @@ void detect_collisions(gamedata &g) {
 
     case 2: {
       // towers
-      int ty = g.gamemap.b[x].y - g.gamemap.b[x].towersize * 16;
+      int ty = max(int(g.p().y), g.gamemap.b[x].y - g.gamemap.b[x].towersize * 16);
       if (g.images[197].collide(g.gamemap.b[x].x, ty, g.images[g.p().image + g.p().d], (int)g.p().x, (int)g.p().y)) {
         g.p().state = 2;
         g.p().land = plane::LandingState::FLYING;
