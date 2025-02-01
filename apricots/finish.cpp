@@ -78,9 +78,15 @@ void finish_game(gamedata &g) {
     SDL_RenderCopy(g.renderer, texture, &rect, NULL);
     SDL_RenderPresent(g.renderer);
     g.sound.play(SOUND_FINISH);
-    // Wait 4 Seconds
-    int then = time(0);
-    while (time(0) - then < 4) {
+
+    SDL_Delay(QUIT_WAIT_MS);
+
+    SDL_Event event;
+    while (true) {
+      SDL_WaitEvent(&event);
+      if (event.type == SDL_QUIT || event.type == SDL_KEYDOWN) {
+        break;
+      }
     }
     SDL_DestroyTexture(texture);
   }
