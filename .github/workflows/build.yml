@@ -29,9 +29,9 @@ jobs:
         env:
           # these are only required for Mac, but hopefully it won't break the
           # Linux build
-          PKG_CONFIG_PATH: "/usr/local/opt/openal-soft/lib/pkgconfig"
-          LDFLAGS: "-L/usr/local/opt/openal-soft/lib"
-          CPPFLAGS: "-I/usr/local/opt/openal-soft/include"
+          PKG_CONFIG_PATH: "/opt/homebrew/opt/openal-soft/lib/pkgconfig"
+          LDFLAGS: "-L/opt/homebrew/opt/openal-soft/lib"
+          CPPFLAGS: "-I/opt/homebrew/opt/openal-soft/include"
         run: |
           ./bootstrap
           ./configure
