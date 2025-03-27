@@ -89,7 +89,7 @@ Status
 ------
 
 The game is still under development. Apricots-0.2.9 is a beta release using the
-SDL2 library. Despite this, it is highly playable. Please open a Github issue to
+SDL2 library. Despite this, it is highly playable. Please open a issue to
 report bugs, feature requests, or comments.
 
 
@@ -135,4 +135,4 @@ Webpage
 -------
 
 For updates, bug fixes, source code and more info please visit the Apricots
-webpage at https://github.com/moggers87/apricots
+webpage at https://codeberg.org/moggers87/apricots
