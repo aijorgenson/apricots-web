@@ -28,3 +28,4 @@ apricots-*.tar.gz
 # editor files
 *.swp
 *~
+wasm/apricots.html
