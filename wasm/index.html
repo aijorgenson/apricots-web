@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Apricots</title>
+<style>
+  body { margin: 0; padding: 0; background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+  canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+</style>
+</head>
+<body>
+<script src="apricots.js"></script>
+<script>
+  Apricots().then(function(Module) {
+    Module.callMain();
+  });
+</script>
+</body>
+</html>

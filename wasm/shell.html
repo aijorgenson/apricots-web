@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Apricots - WebAssembly</title>
+    <style>{{{ SHELL_CSS }}}
+      html, body { background: #0b0f14; }
+      body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; font-family: monospace; color: #ddd; }
+      #wrap { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+      canvas {
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      #controls { display: none; }
+      #output { display: none; }
+      h1 { position: fixed; top: 10px; left: 16px; z-index: 20; font-weight: normal; font-size: 16px; color: #7d8da0; margin: 0; }
+      p.controls2 { position: fixed; bottom: 34px; left: 0; right: 0; z-index: 20; text-align: center; font-size: 12px; color: #7d8da0; margin: 0; pointer-events: none; }
+      #footer { position: fixed; bottom: 6px; left: 0; right: 0; z-index: 20; text-align: center; font-size: 11px; color: #5a6a7a; margin: 0; pointer-events: none; }
+      #footer a { color: #6a8a9a; pointer-events: auto; }
+      #start { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(6,10,14,0.92); z-index: 10; }
+      #start.hidden { display: none; }
+      .startbox { text-align: center; border: 1px solid #2a3a4a; padding: 40px 60px; background: #0d141c; }
+      .startbox h2 { margin: 0 0 12px; color: #ffd77a; font-size: 34px; letter-spacing: 2px; }
+      .startbox p { color: #9db; margin: 0 0 24px; font-size: 14px; }
+      .startbox .license { color: #7a8a9a; font-size: 12px; margin-top: 20px; }
+      .startbox .license a { color: #9ab; }
+      #startbtn { font-family: monospace; font-size: 18px; padding: 12px 34px; background: #e0632c; color: #fff; border: 0; cursor: pointer; }
+      #startbtn:hover { background: #f0783c; }
+    </style>
+  </head>
+  <body>
+    <h1>Apricots</h1>
+    <div class="spinner" id='spinner'></div>
+    <div class="emscripten" id="status"></div>
+    <span id='controls'>
+      <span><input type="button" value="Fullscreen" onclick="Module.requestFullscreen(false, false)"></span>
+    </span>
+    <div class="emscripten">
+      <progress value="0" max="100" id="progress" hidden=1></progress>
+    </div>
+    <div id="wrap">
+      <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+    </div>
+    <textarea id="output" rows="8"></textarea>
+    <p class="controls2">Arrow keys: turn / throttle / drop bomb &middot; Enter: fire &middot; (2P: Z/C/S/X + Ctrl) &middot; Escape: quit</p>
+    <p id="footer"><a href="https://github.com/aijorgenson/apricots-web" target="_blank" rel="noopener">github.com/aijorgenson/apricots-web</a> &middot; <a href="https://github.com/moggers87/apricots" target="_blank" rel="noopener">github.com/moggers87/apricots</a> &middot; <a id="gpl-link" href="#" target="_blank" rel="noopener">GPL License</a></p>
+    <div id="start">
+      <div class="startbox">
+        <h2>Apricots</h2>
+        <p>Fly your plane, shoot enemy targets and bomb their bases.</p>
+        <button id="startbtn">Click to Start</button>
+        <p class="license">Original author: <a href="https://github.com/moggers87/apricots" target="_blank" rel="noopener">Mark Snellgrove</a>; current maintainer and SDL2 porter: moggers87<br>
+        (<a href="https://github.com/moggers87/apricots" target="_blank" rel="noopener">GitHub</a> &middot; <a href="https://codeberg.org/moggers87/apricots" target="_blank" rel="noopener">Codeberg</a>). License: <a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html" target="_blank" rel="noopener">GNU GPL v2</a></p>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      var statusElement = document.getElementById('status');
+      var progressElement = document.getElementById('progress');
+      var spinnerElement = document.getElementById('spinner');
+      var canvasElement = document.getElementById('canvas');
+      var outputElement = document.getElementById('output');
+
+      canvasElement.addEventListener('webglcontextlost', (e) => {
+        alert('WebGL context lost. You will need to reload the page.');
+        e.preventDefault();
+      }, false);
+
+      var setStatus = (text) => {
+        if (text) statusElement.innerHTML = text;
+      };
+
+#if MODULARIZE && !EXPORT_ES6
+      var moduleArgs = {
+#else
+      var Module = {
+#endif
+        print(...args) {
+          console.log(...args);
+          if (outputElement) {
+            var text = args.join(' ');
+            outputElement.value += text + "\n";
+          }
+        },
+        canvas: canvasElement,
+        setStatus: setStatus,
+        onExit: (code) => {
+          console.log('Apricots exited:', code);
+          window.dispatchEvent(new CustomEvent('apricots-exit', { detail: code }));
+        },
+        onAbort: (msg) => {
+          console.log('Apricots aborted:', msg);
+          window.dispatchEvent(new CustomEvent('apricots-exit', { detail: -1 }));
+        },
+      };
+      setStatus('Loading...');
+    </script>
+    {{{ SCRIPT }}}
+#if MODULARIZE && !EXPORT_ES6
+    <script type="text/plain" id="license-text">__LICENSE_TEXT__</script>
+    <script type='text/javascript'>
+      var startEl = document.getElementById('start');
+      var btn = document.getElementById('startbtn');
+      var firstStart = true;
+      btn.addEventListener('click', () => {
+        if (!firstStart) {
+          // A previous game exited and tore down its runtime; start fresh.
+          location.reload();
+          return;
+        }
+        firstStart = false;
+        startEl.classList.add('hidden');
+        var statusElement = document.getElementById('status');
+        statusElement.textContent = '';
+        ApricotsFactory(moduleArgs).then((mod) => {
+          window.__apricotsModule = mod;
+          // Browser autoplay policies only allow audio after a user gesture;
+          // the game uses OpenAL, so nothing more is needed here.
+        }).catch((e) => {
+          console.error('Failed to start:', e);
+          statusElement.textContent = 'Failed to start: ' + e;
+          firstStart = true;
+          startEl.classList.remove('hidden');
+        });
+      });
+
+      // When the game exits (Escape pressed / game over), return to the menu.
+      window.addEventListener('apricots-exit', () => {
+        var statusElement = document.getElementById('status');
+        statusElement.textContent = '';
+        var spinner = document.getElementById('spinner');
+        if (spinner) spinner.style.display = 'none';
+        startEl.classList.remove('hidden');
+        btn.disabled = false;
+        // Next click re-boots the game from scratch via reload.
+      });
+
+      document.getElementById('gpl-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        var text = document.getElementById('license-text').textContent;
+        var url = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
+        window.open(url, '_blank', 'noopener');
+      });
+    </script>
+#endif
+  </body>
+</html>

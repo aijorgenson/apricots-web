@@ -1,0 +1,8 @@
+# Netlify static deploy config
+# The whole game is a single self-contained file (public/index.html) and is
+# prebuilt and committed, so no toolchain is needed on Netlify's servers.
+# The build command just refreshes public/index.html from the latest wasm
+# build if one is present, otherwise keeps the committed copy.
+[build]
+  command = "node -e \"const fs=require('fs');try{fs.copyFileSync('wasm/apricots.html','public/index.html')}catch(e){if(e.code!=='ENOENT')throw e}\""
+  publish = "public"
