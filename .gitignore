@@ -25,6 +25,9 @@ Makefile
 # make dist
 apricots-*.tar.gz
 
+# local machine build wrapper
+wasm/build.local.sh
+
 # editor files
 *.swp
 *~

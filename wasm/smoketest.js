@@ -28,11 +28,15 @@ function fakeEl() {
   };
 }
 
-// Collect all inline script bodies in order.
+// Collect all inline script bodies in order. Skip any <script> that carries a
+// type attribute (e.g. the text/plain license blob), which is not JavaScript.
 const scripts = [];
-const re = /<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g;
+const re = /<script(?:\s([^>]*))?>([\s\S]*?)<\/script>/g;
 let m;
-while ((m = re.exec(html)) !== null) scripts.push(m[1]);
+while ((m = re.exec(html)) !== null) {
+  if (/\btype=/.test(m[1] || '')) continue;
+  scripts.push(m[2]);
+}
 
 // The last script calls ApricotsFactory(moduleArgs). We evaluate everything
 // up to that call in a sandbox with browser stubs, then call the factory

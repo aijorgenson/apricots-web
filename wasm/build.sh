@@ -1,18 +1,35 @@
-#!/run/current-system/sw/bin/bash
+#!/usr/bin/env bash
 # Build Apricots as a self-contained single-file WebAssembly page.
 set -e
 
-export PATH="/nix/store/9xnqfrllp81xg4r4vpwr6kiiarzj1zd7-emscripten-6.0.2/bin:$PATH"
-export PYTHON=/home/deadbeef/.lmstudio/extensions/backends/vendor/_amphibian/cpython3.11-linux-x86@3/bin/python3.11
+# The local wrapper script (build.local.sh, gitignored) sets up machine
+# specific paths (emscripten toolchain, python) before running this script.
+EMCC=$(command -v emcc || true)
+if [ -z "$EMCC" ]; then
+  echo "error: emcc not found in PATH" >&2
+  exit 1
+fi
+PYTHON=${PYTHON:-}
+if [ -z "$PYTHON" ]; then
+  PYTHON=$(command -v python3 || command -v python || true)
+fi
+if [ -z "$PYTHON" ]; then
+  echo "error: python3 not found in PATH" >&2
+  exit 1
+fi
 
-EMCC=$(command -v emcc)
 SRC_DIR="$(cd "$(dirname "$0")/../apricots" && pwd)"
 WASM_DIR="$(cd "$(dirname "$0")" && pwd)"
 OUT="apricots.html"
 
+# -fmacro-prefix-map makes __FILE__ expand to a relative path instead of the
+# build machine's absolute path, so no /home/<user>/... leaks into the wasm.
 COMMON_FLAGS=(
   -std=c++17
   -O2
+  -fmacro-prefix-map="$SRC_DIR"=apricots
+  -fmacro-prefix-map="$WASM_DIR"=wasm
+  -Wno-enum-compare-switch
   -sUSE_SDL=2
   -sTOTAL_MEMORY=134217728
   -sALLOW_MEMORY_GROWTH=0
@@ -22,7 +39,7 @@ COMMON_FLAGS=(
   -sSINGLE_FILE=1
   -sFILESYSTEM=1
   -sASSERTIONS=0
-  -sEXPORTED_RUNTIME_METHODS=FS,allocateUTF8,UTF8ToString
+  -sEXPORTED_RUNTIME_METHODS=FS,UTF8ToString
   -sEXPORTED_FUNCTIONS=_main
   -sSTACK_SIZE=1048576
   -sASYNCIFY
