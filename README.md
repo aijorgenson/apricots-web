@@ -1,7 +1,7 @@
 # Apricots Web Port (Non-Official)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/91c61b3f-4668-432c-97f2-51682a6b8b5f/deploy-status)](https://app.netlify.com/projects/apricots/deploys)
 
-Play on Netlify: [https://apricots.netlify.app/](https://apricots.netlify.app/)
+## Play on Netlify: [https://apricots.netlify.app/](https://apricots.netlify.app/)
 
 ## Introduction
 A web based port of the GPL licensed game **Apricots**. Apricots was originally published by Mark Snellgrove in 1991. moogers87 became the maintainer of Apricots in 2019.
