@@ -18,8 +18,8 @@
       #controls { display: none; }
       #output { display: none; }
       h1 { position: fixed; top: 10px; left: 16px; z-index: 20; font-weight: normal; font-size: 16px; color: #7d8da0; margin: 0; }
-      p.controls2 { position: fixed; bottom: 34px; left: 0; right: 0; z-index: 20; text-align: center; font-size: 12px; color: #7d8da0; margin: 0; pointer-events: none; }
-      #footer { position: fixed; bottom: 6px; left: 0; right: 0; z-index: 20; text-align: center; font-size: 11px; color: #5a6a7a; margin: 0; pointer-events: none; }
+      p.controls2 { position: fixed; bottom: 66px; left: 0; right: 0; z-index: 20; text-align: center; font-size: 12px; color: #7d8da0; margin: 0; pointer-events: none; }
+      #footer { position: fixed; bottom: 6px; left: 0; right: 0; z-index: 20; text-align: center; font-size: 11px; color: #5a6a7a; margin: 0; line-height: 1.6; pointer-events: none; }
       #footer a { color: #6a8a9a; pointer-events: auto; }
       #start { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(6,10,14,0.92); z-index: 10; }
       #start.hidden { display: none; }
@@ -47,13 +47,13 @@
     </div>
     <textarea id="output" rows="8"></textarea>
     <p class="controls2">Arrow keys: turn / throttle / drop bomb &middot; Enter: fire &middot; (2P: Z/C/S/X + Ctrl) &middot; Escape: quit</p>
-    <p id="footer">
+    <div id="footer">
       <a href="https://github.com/aijorgenson/apricots-web" target="_blank" rel="noopener">github.com/aijorgenson/apricots-web</a> &middot; <a id="gpl-link" href="#" target="_blank" rel="noopener">GPL License</a>
-      <p class="license">
-        Original author: <a href="https://github.com/moggers87/apricots" target="_blank" rel="noopener">Mark Snellgrove</a>; current maintainer and SDL2 porter: moggers87<br>
-        <a href="https://codeberg.org/moggers87/apricots" target="_blank" rel="noopener">Original Repository</a>
-      </p>
-    </p>
+      <br>
+      Original author: Mark Snellgrove 1991; current maintainer and SDL2 porter: moggers87
+      <br>
+      <a href="https://codeberg.org/moggers87/apricots" target="_blank" rel="noopener">Original Repository</a>
+    </div>
     <div id="start">
       <div class="startbox">
         <h2>Apricots</h2>
