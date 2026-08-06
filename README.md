@@ -18,4 +18,4 @@ This is not a typical reflection of the quality of my work, I just wanted to mak
 This is also why I did not publish the project on Codeberg to accompany or be a part of moggers87's repository, as they have a policy against LLM generated content.
 
 ## Building
-See [netlify.toml](netlify.toml)
+See [netlify.toml](netlify.toml) for the current deploy process. Build by running `wasm/build.sh`
